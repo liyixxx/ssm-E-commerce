@@ -1,0 +1,7 @@
+package com.ego.search.pojo;
+
+import com.ego.pojo.TbItem;
+
+public class TbItemChild extends TbItem{
+
+}

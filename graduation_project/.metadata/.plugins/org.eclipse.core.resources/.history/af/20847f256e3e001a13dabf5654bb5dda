@@ -1,0 +1,11 @@
+package com.ego.cart.controller;
+
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class CartController {
+
+	public String addCart(){
+		return "cartSuccess" ;
+	}
+}

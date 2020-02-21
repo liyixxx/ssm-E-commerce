@@ -1,0 +1,8 @@
+package com.ego.dubbo.service.impl;
+
+import com.ego.dubbo.service.TbOrderDubboService;
+import com.ego.dubbo.service.TbOrderItemDubboService;
+
+public class TbOrderItemDubboServiceImpl implements TbOrderItemDubboService{
+
+}

@@ -1,0 +1,11 @@
+package com.ego.passport.service;
+
+public interface TbUserService {
+
+	/**
+	 * 登录
+	 * @param user
+	 * @return
+	 */
+	EgoResult login (TbUser user);
+}

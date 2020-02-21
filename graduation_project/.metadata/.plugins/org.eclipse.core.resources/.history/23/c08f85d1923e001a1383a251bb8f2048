@@ -1,0 +1,6 @@
+package com.ego.order.service;
+
+public interface TbOrderService {
+
+	
+}

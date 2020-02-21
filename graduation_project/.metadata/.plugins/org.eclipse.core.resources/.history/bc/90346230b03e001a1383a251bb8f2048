@@ -1,0 +1,188 @@
+package com.ego.order.service.impl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.ego.commons.pojo.EgoResult;
+import com.ego.commons.pojo.TbItemChild;
+import com.ego.commons.utils.CookieUtils;
+import com.ego.commons.utils.HttpClientUtil;
+import com.ego.commons.utils.IDUtils;
+import com.ego.commons.utils.JsonUtils;
+import com.ego.dubbo.service.TbItemDubboService;
+import com.ego.dubbo.service.TbOrderDubboService;
+import com.ego.dubbo.service.TbOrderItemDubboService;
+import com.ego.dubbo.service.TbOrderShippingDubboService;
+import com.ego.order.pojo.MyOrderParam;
+import com.ego.order.service.TbOrderService;
+import com.ego.pojo.TbItem;
+import com.ego.pojo.TbOrder;
+import com.ego.pojo.TbOrderItem;
+import com.ego.pojo.TbOrderShipping;
+import com.ego.redis.dao.JedisDao;
+
+@Service
+public class TbOrderServiceImpl implements TbOrderService {
+
+	@Resource
+	private JedisDao jedisDaoImpl ;
+	
+	@Value("${cart.key}")
+	private String cartKey ;
+	
+	@Value("${passport.url}")
+	private String passportUrl ;
+	
+	@Value("${redis.order.key}")
+	private String orderKey ;
+	
+	@Reference
+	private TbItemDubboService tbItemDubboServiceImpl ;
+	
+	@Reference
+	private TbOrderDubboService tbOrderDubboServiceImpl ;
+	
+	@Reference
+	private TbOrderItemDubboService tbOrderItemDubboServiceImpl ;
+	
+	@Reference
+	private TbOrderShippingDubboService tbOrderShippingDubboServiceImpl ;
+	
+	@Override
+	public List<TbItemChild> showOrderCart(List<Long> ids, HttpServletRequest request) {
+		// 获取用户信息
+		String token = CookieUtils.getCookieValue(request, "TT_TOKEN");
+		String value = HttpClientUtil.doPost(passportUrl+token);
+		EgoResult egoResult = JsonUtils.jsonToPojo(value, EgoResult.class);
+		String key = cartKey + ((LinkedHashMap)egoResult.getData()).get("username");
+		String json = jedisDaoImpl.get(key);
+		List<TbItemChild> list = JsonUtils.jsonToList(json, TbItemChild.class);
+		
+		List<TbItemChild> listNew = new ArrayList<>();
+		// 遍历 取出商品
+		for (TbItemChild child : list) {
+			for (Long id : ids) {
+				if((long)child.getId() == (long)id){
+					// 判断该商品库存是否充足
+					TbItem item = tbItemDubboServiceImpl.selById((long)id);
+					if(item.getNum() >= child.getNum()){
+						child.setEnough(true);
+					}else{
+						child.setEnough(false);
+					}
+					listNew.add(child);
+				}
+			}
+		}
+		
+		return listNew;
+	}
+
+	@Override
+	public EgoResult create(MyOrderParam param, HttpServletRequest request) {
+		// 新增到订单表
+		TbOrder order = new TbOrder();
+		order.setPayment(param.getPayment());
+		order.setPaymentType(param.getPaymentType());
+		long id = IDUtils.genItemId();
+		// 设置订单id
+		order.setOrderId(id+"");
+		Date date = new Date();
+		order.setCreateTime(date);
+		order.setUpdateTime(date);
+		// 通过cookie来获取用户信息
+		String token = CookieUtils.getCookieValue(request, "TT_TOKEN");
+		String result = HttpClientUtil.doPost(passportUrl+token);
+		EgoResult ego = JsonUtils.jsonToPojo(result, EgoResult.class);
+		// 获取到用户信息
+		Map user = (LinkedHashMap)ego.getData();
+		// redis - key
+		String key = cartKey + user.get("username");
+		// 用户id
+		order.setUserId(Long.parseLong(user.get("id").toString()));
+		// 用户名
+		order.setBuyerNick(user.get("username").toString());
+		// 用户是否已评价 
+		order.setBuyerRate(0);
+		
+		// 新增到订单-商品表
+		for (TbOrderItem orderItem : param.getOrderItems()) {
+			// 该商品订单的id
+			orderItem.setId(IDUtils.genItemId()+"");
+			// 用户的商品订单id
+			orderItem.setOrderId(id+"");
+		}
+		
+		// 新增到收货人信息表
+		TbOrderShipping shipping = param.getOrderShipping();
+		shipping.setOrderId(id+"");
+		shipping.setCreated(date);
+		shipping.setUpdated(date);
+		
+		// 新增完后需要将购物车中的这些商品删除
+		EgoResult egoResult = new EgoResult();
+		try {
+			int index = tbOrderDubboServiceImpl.insOrder(order, param.getOrderItems(), shipping);
+			System.out.println("index = "+index);
+			if(index > 0){
+				egoResult.setStatus(200);
+				// 删除购买的商品
+				String json = jedisDaoImpl.get(key);
+				// 用户购物车中的商品
+				List<TbItemChild> listCart = JsonUtils.jsonToList(json, TbItemChild.class);
+				// 待删除的商品集合
+				List<TbItemChild> listDel = new ArrayList<>();
+				for (TbItemChild child : listCart) {
+					for (TbOrderItem orderItem : param.getOrderItems()) {
+						System.out.println("cart_item_id : " + child.getId().longValue());
+						System.out.println("del_item_id : "+Long.parseLong(orderItem.getItemId()));
+						if(child.getId().longValue() == Long.parseLong(orderItem.getItemId())){
+							listDel.add(child);
+						}
+					}
+				}
+				// 删除
+				for (TbItemChild del : listDel) {
+					listCart.remove(del);
+				}
+				
+				jedisDaoImpl.set(orderKey, JsonUtils.objectToJson(listDel));
+				// 购物车信息跟新
+				jedisDaoImpl.set(key, JsonUtils.objectToJson(listCart));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return egoResult;
+	}
+
+	@Override
+	public MyOrderParam getOrderInfo() {
+		String value = jedisDaoImpl.get(orderKey);
+		
+		String orderId = null ;
+		MyOrderParam param = new MyOrderParam();
+		TbOrder order = tbOrderDubboServiceImpl.selById(orderId);
+		List<TbOrderItem> list = tbOrderItemDubboServiceImpl.selByOrderId(orderId);
+		TbOrderShipping shipping = tbOrderShippingDubboServiceImpl.selById(orderId);
+		if(param!=null && list!=null && list.size()>0 && shipping!=null){
+			param.setPayment(order.getPayment());
+			param.setPaymentType(0);
+			param.setOrderItems(list);
+			param.setOrderShipping(shipping);
+		}
+		return param;
+	}
+
+}

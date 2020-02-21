@@ -1,0 +1,12 @@
+package com.ego.cart.controller;
+
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class CartController {
+
+	@RequestMapping("cart/add/{id}.html")
+	public String addCart(){
+		return "cartSuccess" ;
+	}
+}

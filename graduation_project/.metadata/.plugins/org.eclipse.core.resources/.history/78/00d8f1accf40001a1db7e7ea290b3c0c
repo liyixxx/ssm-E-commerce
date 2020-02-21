@@ -1,0 +1,6 @@
+package com.xin.solrj;
+
+public class SecondTest {
+
+	private String name ;
+}

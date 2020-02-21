@@ -1,0 +1,10 @@
+package com.xin.solrj;
+
+public class SecondTest {
+
+	private String name ;
+	
+	public static void main(String[] args) {
+		
+	}
+}

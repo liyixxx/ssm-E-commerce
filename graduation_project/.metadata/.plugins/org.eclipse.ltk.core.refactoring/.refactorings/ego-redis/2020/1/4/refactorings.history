@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;ego-redis/src/main/resources/applicationContext-jedis.xml&apos; to &apos;applicationContext_jedis.xml&apos;" description="Rename resource &apos;applicationContext-jedis.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/resources/applicationContext-jedis.xml" name="applicationContext_jedis.xml" stamp="1579491269935" updateReferences="true"/>
+</session>

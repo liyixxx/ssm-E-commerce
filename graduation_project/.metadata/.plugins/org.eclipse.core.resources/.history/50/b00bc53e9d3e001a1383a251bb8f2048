@@ -1,0 +1,10 @@
+package com.ego.dubbo.service;
+
+/**
+ * 订单
+ * @author 柒
+ *
+ */
+public interface TbOrderDubboService {
+
+}

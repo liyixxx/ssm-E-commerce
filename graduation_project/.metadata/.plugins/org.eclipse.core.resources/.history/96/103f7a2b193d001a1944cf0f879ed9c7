@@ -1,0 +1,6 @@
+redis.pic.key = bigpic
+
+
+
+redis.item.key = item:
+redis.desc.key = desc:

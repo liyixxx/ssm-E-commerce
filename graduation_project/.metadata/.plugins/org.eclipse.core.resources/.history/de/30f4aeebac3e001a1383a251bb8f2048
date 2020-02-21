@@ -1,0 +1,22 @@
+package com.ego.dubbo.service.impl;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import com.ego.dubbo.service.TbOrderItemDubboService;
+import com.ego.mapper.TbOrderItemMapper;
+import com.ego.pojo.TbOrderItem;
+
+public class TbOrderItemDubboServiceImpl implements TbOrderItemDubboService{
+
+	@Resource
+	private TbOrderItemMapper tbOrderItemMapperImpl ;
+	
+	@Override
+	public List<TbOrderItem> selByOrderId(long id) {
+		tbOrderItemMapperImpl.selectByExample(example);
+		return null;
+	}
+
+}

@@ -1,0 +1,10 @@
+package com.ego.item.controller;
+
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class TbItemController {
+
+	
+	
+}

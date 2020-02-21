@@ -1,0 +1,23 @@
+Signature-Version: 1.0
+SHA-256-Digest-Manifest-Main-Attributes: R5d/e4Y1j/g9nHt/EcI5hTFUOS/Op
+ 2I9oYW6Okqup0A=
+SHA-256-Digest-Manifest: 11IK9tZxiTNJzuwfMgJglLWIe1kV/OdF5jMbuKcE02U=
+Created-By: 1.8.0_51 (Oracle Corporation)
+
+Name: about.html
+SHA-256-Digest: JgU8YfZm6Hg3SDXkjvLsnSAiF/kN1yBLnOFp9oSr4JA=
+
+Name: lifecycle-mapping-metadata.xml
+SHA-256-Digest: unJPKSYT/adv8jh2EQEQBg8BucoqH5M4hcBcibpthwk=
+
+Name: META-INF/maven/org.eclipse.m2e/org.eclipse.m2e.lifecyclemapping.
+ defaults/pom.properties
+SHA-256-Digest: u+VroO0IvfYobo43LQqbmuVAiGvVe0bAq+Cv6CGie/M=
+
+Name: plugin.properties
+SHA-256-Digest: 7EvN6Fr4d77c18pkVDp78j7FNVxHvX8bDp2OzRgYaPY=
+
+Name: META-INF/maven/org.eclipse.m2e/org.eclipse.m2e.lifecyclemapping.
+ defaults/pom.xml
+SHA-256-Digest: 8/eBNGN/gHoA7n4VTXjIbdMvBaUjrL2CWGgKAcaOQUg=
+

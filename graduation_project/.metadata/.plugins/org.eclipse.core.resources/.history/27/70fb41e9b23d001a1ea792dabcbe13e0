@@ -1,0 +1,17 @@
+package com.ego.dubbo.service.impl;
+
+import com.ego.dubbo.service.TbItemParamItemDubboService;
+import com.ego.mapper.TbItemParamItemMapper;
+import com.ego.pojo.TbItemParamItem;
+
+public class TbItemParamItemDubboServiceImpl implements TbItemParamItemDubboService{
+
+	private TbItemParamItemMapper
+	
+	@Override
+	public TbItemParamItem selByItemId(long itemId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

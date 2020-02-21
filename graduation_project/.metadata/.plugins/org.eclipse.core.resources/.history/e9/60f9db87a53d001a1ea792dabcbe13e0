@@ -1,0 +1,136 @@
+package com.ego.manage.service.impl;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.ego.commons.pojo.EasyUiDataGrid;
+import com.ego.commons.pojo.EgoResult;
+import com.ego.commons.utils.HttpClientUtil;
+import com.ego.commons.utils.IDUtils;
+import com.ego.commons.utils.JsonUtils;
+import com.ego.dubbo.service.TbItemDescDubboService;
+import com.ego.dubbo.service.TbItemDubboService;
+import com.ego.manage.service.TbItemService;
+import com.ego.pojo.TbItem;
+import com.ego.pojo.TbItemDesc;
+import com.ego.pojo.TbItemParamItem;
+
+@Service
+public class TbItemServiceImpl implements TbItemService{
+	@Reference
+	private TbItemDubboService tbItemDubboServiceImpl;
+	
+	@Reference
+	private TbItemDescDubboService tbItemDescDubboServiceImpl ;
+	
+	@Value("${search.url}")
+	private String url ;
+	
+	@Override
+	public EasyUiDataGrid show(int page, int rows) {
+		return tbItemDubboServiceImpl.show(page, rows);
+	}
+	
+	@Override
+	public int update(String ids, byte status) {
+		String[] split = ids.split(",");
+		TbItem item = new TbItem();
+		int index = 0 ;
+		for (String id : split) {
+			item.setId(Long.parseLong(id));
+			item.setStatus(status);
+			index += tbItemDubboServiceImpl.updItemStatus(item);
+		}
+		if(index == split.length){
+			return 1 ;
+		}
+		return 0;
+	}
+
+	
+	@Override
+	public int insTbItem(TbItem item, String desc) throws Exception {
+		long id = IDUtils.genItemId();
+		item.setId(id);
+		Date date = new Date();
+		item.setCreated(date);
+		item.setUpdated(date);
+		item.setStatus((byte)1);
+		
+		TbItemDesc itemDesc = new TbItemDesc();
+		itemDesc.setCreated(date);
+		itemDesc.setUpdated(date);
+		itemDesc.setItemDesc(desc);
+		itemDesc.setItemId(id);
+		
+		return tbItemDubboServiceImpl.insTbItemDesc(item, itemDesc);
+	}
+
+	@Override
+	public int insTbItem(TbItem item, String desc, String itemParams) throws Exception {
+		long id = IDUtils.genItemId();
+		item.setId(id);
+		Date date = new Date();
+		item.setCreated(date);
+		item.setUpdated(date);
+		item.setStatus((byte)1);
+		
+		TbItemDesc itemDesc = new TbItemDesc();
+		itemDesc.setCreated(date);
+		itemDesc.setUpdated(date);
+		itemDesc.setItemDesc(desc);
+		itemDesc.setItemId(id);
+		
+		TbItemParamItem param = new TbItemParamItem();
+		param.setCreated(date);
+		param.setUpdated(date);
+		param.setItemId(id);
+		param.setParamData(itemParams);
+		
+		final TbItem itemFinal = item;
+		final TbItemDesc finalItemDesc = itemDesc;
+		// 添加多线程 不用等待结果
+		new Thread(){
+			public void run() {
+				//同步solr 
+				Map<String, Object> map = new HashMap<>();
+				// 匿名内部类 重写方法时内容要求为final或者是全局的
+				map.put("item", itemFinal);
+				map.put("desc", finalItemDesc);
+				//HttpClient 使用Java代码调用其他项目的控制器
+				HttpClientUtil.doPostJson(url, JsonUtils.objectToJson(map));
+			};
+		}.start();
+		
+		
+		return tbItemDubboServiceImpl.insTbItemDescParam(item, itemDesc, param);
+	}
+
+	@Override
+	public EgoResult updateItem(TbItem item, String desc) {
+		Date date = new Date();
+		EgoResult ego = new EgoResult();
+		TbItem selItem = tbItemDubboServiceImpl.selById(item.getId());
+		
+		// 修改商品表
+		item.setStatus(selItem.getStatus());
+		item.setUpdated(date);
+		item.setPrice(item.getPrice()/10);
+		int index = tbItemDubboServiceImpl.updItemStatus(item);
+		
+		// 修改商品描述表
+		TbItemDesc selDesc = tbItemDescDubboServiceImpl.selByItemId(item.getId());
+		selDesc.setItemDesc(desc);
+		selDesc.setUpdated(date);
+		index += tbItemDescDubboServiceImpl.updByItemDesc(selDesc);
+		if(index == 2){
+			ego.setStatus(200);
+		}
+		return ego;
+	}
+}

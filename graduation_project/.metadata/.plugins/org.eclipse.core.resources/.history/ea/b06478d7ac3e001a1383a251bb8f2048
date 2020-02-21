@@ -1,0 +1,16 @@
+package com.ego.dubbo.service.impl;
+
+import java.util.List;
+
+import com.ego.dubbo.service.TbOrderItemDubboService;
+import com.ego.pojo.TbOrderItem;
+
+public class TbOrderItemDubboServiceImpl implements TbOrderItemDubboService{
+
+	@Override
+	public List<TbOrderItem> selByOrderId(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

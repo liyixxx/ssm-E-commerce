@@ -1,0 +1,14 @@
+package com.ego.dubbo.service.impl;
+
+import com.ego.dubbo.service.TbUserDubboService;
+import com.ego.pojo.TbUser;
+
+public class TbUserDubboServiceImpl implements TbUserDubboService{
+
+	@Override
+	public TbUser selByUser(TbUser user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

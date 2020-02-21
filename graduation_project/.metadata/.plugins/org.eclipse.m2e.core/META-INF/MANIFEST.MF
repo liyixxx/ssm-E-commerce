@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.m2e.lifecyclemapping.defaults;singlet
+ on:=true
+Archiver-Version: Plexus Archiver
+Built-By: genie.m2e
+Require-Bundle: org.eclipse.m2e.core;bundle-version="[1.6.0,1.7.0)",or
+ g.eclipse.m2e.jdt;bundle-version="[1.6.0,1.7.0)"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7,JavaSE-1.8
+Bundle-ManifestVersion: 2
+Bundle-Vendor: %Bundle-Vendor
+Bundle-Name: %Bundle-Name
+Bundle-Version: 1.6.2.20150902-0002
+Bundle-Localization: plugin
+Created-By: Apache Maven 3.3.1
+Build-Jdk: 1.7.0_80
+
+Name: about.html
+SHA-256-Digest: JN1FhTLmDF7gWzI3czmBLDyM+OmK92OMg4i9wGf9xF0=
+
+Name: lifecycle-mapping-metadata.xml
+SHA-256-Digest: 5gpbQ3AC/xPtrRxScv6B5jxQzNm/Im3sXV/8oSWHohc=
+
+Name: META-INF/maven/org.eclipse.m2e/org.eclipse.m2e.lifecyclemapping.
+ defaults/pom.properties
+SHA-256-Digest: niShGcb9TO22qp9THe9EpCub6nMr8Cuto5QAGXNLUSo=
+
+Name: plugin.properties
+SHA-256-Digest: 9v14kMttmHbEMXBpMjrgpPOrci+/W0pb66ts4GumAbA=
+
+Name: META-INF/maven/org.eclipse.m2e/org.eclipse.m2e.lifecyclemapping.
+ defaults/pom.xml
+SHA-256-Digest: 8a5c9DDHEU0vsQzpX/4L4hEjaVWVHVyw5DxSr1RDPv8=
+

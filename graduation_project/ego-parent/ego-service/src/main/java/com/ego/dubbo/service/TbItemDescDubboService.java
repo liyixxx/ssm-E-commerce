@@ -1,0 +1,25 @@
+package com.ego.dubbo.service;
+
+import com.ego.pojo.TbItem;
+import com.ego.pojo.TbItemDesc;
+/**
+ * 商品描述
+ * @author 柒
+ *
+ */
+public interface TbItemDescDubboService {
+
+	/**
+	 * 根据商品id查询详细信息
+	 * @param itemId
+	 * @return
+	 */
+	TbItemDesc selByItemId(long itemId);
+	
+	/**
+	 * 修改商品描述信息
+	 * @param desc
+	 * @return
+	 */
+	int updByItemDesc(TbItemDesc desc);
+}

@@ -1,0 +1,7 @@
+package com.ego.dubbo.service.impl;
+
+import com.ego.dubbo.service.TbItemParamItemDubboService;
+
+public class TbItemParamItemDubboServiceImpl implements TbItemParamItemDubboService{
+
+}

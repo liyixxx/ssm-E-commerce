@@ -1,0 +1,5 @@
+package com.ego.cart.service;
+
+public interface TbItemCartService {
+
+}

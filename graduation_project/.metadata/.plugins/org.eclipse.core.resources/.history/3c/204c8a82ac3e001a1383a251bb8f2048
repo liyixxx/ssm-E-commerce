@@ -1,0 +1,20 @@
+package com.ego.dubbo.service;
+
+import java.util.List;
+
+import com.ego.pojo.TbOrderItem;
+
+/**
+ * 订单 - 商品
+ * @author 柒
+ *
+ */
+public interface TbOrderItemDubboService {
+
+	/**
+	 * 根据orderid查询出
+	 * @param id
+	 * @return
+	 */
+	List<TbOrderItem> selByOrderId(long id);
+}

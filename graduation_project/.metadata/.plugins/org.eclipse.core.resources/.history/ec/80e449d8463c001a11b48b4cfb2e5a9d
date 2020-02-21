@@ -1,0 +1,9 @@
+package com.ego.search.service;
+
+public interface TbItemService {
+
+	/**
+	 * 初始化solr
+	 */
+	void init() throws Exception ;
+}

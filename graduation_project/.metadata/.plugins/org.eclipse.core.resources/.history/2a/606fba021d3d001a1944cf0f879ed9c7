@@ -1,0 +1,70 @@
+package com.ego.dubbo.service;
+
+import java.util.List;
+
+import com.ego.commons.pojo.EasyUiDataGrid;
+import com.ego.pojo.TbItem;
+import com.ego.pojo.TbItemDesc;
+import com.ego.pojo.TbItemParamItem;
+/**
+ * 商品
+ * @author 柒
+ *
+ */
+public interface TbItemDubboService {
+
+	/**
+	 * 查询全部商品
+	 * @param page
+	 * @param rows
+	 * @return
+	 */
+	EasyUiDataGrid show(int page , int rows);
+	
+	/**
+	 * 批量修改商品状态 / 商品信息修改
+	 * @param tbItem
+	 * @return
+	 */
+	int updItemStatus(TbItem tbItem);
+
+	/**
+	 * 新增商品 未考虑事务回滚
+	 * @param tbItem
+	 * @return
+	 */
+	int insTbItem(TbItem tbItem);
+	
+	/**
+	 * 新增商品 考虑事务回滚
+	 * @param tbItem
+	 * @param desc
+	 * @return
+	 */
+	int insTbItemDesc(TbItem tbItem , TbItemDesc desc) throws Exception ;
+	
+	/**
+	 * 新增商品 考虑事务回滚 同时添加规格参数信息
+	 * @param tbItem
+	 * @param desc
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
+	int insTbItemDescParam(TbItem tbItem , TbItemDesc desc , TbItemParamItem itemParam) throws Exception ;
+	
+	/**
+	 * 根据状态查询全部商品
+	 * @param status
+	 * @return
+	 */
+	List<TbItem> selAllByStatus(byte status);
+	
+	/**
+	 * 
+	 * @param item
+	 * @return
+	 */
+	TbItem selById(TbItem item);
+	
+}

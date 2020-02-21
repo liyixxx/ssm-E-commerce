@@ -1,0 +1,19 @@
+package com.ego.item.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import com.ego.dubbo.service.TbItemParamItemDubboService;
+import com.ego.item.service.TbItemParamItemService;
+
+@Service
+public class TbItemParamItemServiceImpl implements TbItemParamItemService{
+
+	private TbItemParamItemDubboService
+	
+	@Override
+	public String showParam(long itemId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

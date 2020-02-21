@@ -1,0 +1,5 @@
+package com.ego.search.pojo;
+
+public class TbItemChild {
+
+}

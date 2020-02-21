@@ -1,0 +1,13 @@
+package com.ego.item.service.impl;
+
+import com.ego.item.service.TbItemParamItemService;
+
+public class TbItemParamItemServiceImpl implements TbItemParamItemService{
+
+	@Override
+	public String showParam(long itemId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

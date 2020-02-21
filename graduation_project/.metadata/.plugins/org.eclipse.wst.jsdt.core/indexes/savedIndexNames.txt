@@ -1,0 +1,13 @@
+INDEX VERSION 1.3+C:\Users\AAA\Desktop\ǳ\java\CodeFile\graduation_project\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2597333702.index
+3120593690.index
+1315011561.index
+186778958.index
+1524225600.index
+3599293379.index
+1320171453.index
+620641524.index
+115103702.index
+2042572184.index
+1137498945.index
+3028045081.index

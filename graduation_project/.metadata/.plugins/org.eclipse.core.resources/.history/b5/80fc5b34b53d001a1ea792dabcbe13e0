@@ -1,0 +1,12 @@
+package com.ego.item.controller;
+
+import org.springframework.stereotype.Controller;
+
+import com.ego.item.service.TbItemParamItemService;
+
+@Controller
+public class TbItemParamItemController {
+
+	private TbItemParamItemService
+	
+}

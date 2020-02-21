@@ -1,0 +1,9 @@
+package com.ego.cart.service;
+
+import javax.servlet.http.HttpServletRequest;
+
+public interface TbItemCartService {
+
+	
+	void showCart(long id , int num , HttpServletRequest request);
+}

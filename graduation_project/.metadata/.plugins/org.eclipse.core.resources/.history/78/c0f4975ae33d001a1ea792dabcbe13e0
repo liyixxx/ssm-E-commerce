@@ -1,0 +1,76 @@
+package com.ego.passport.service.impl;
+
+import java.util.UUID;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Service;
+
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.ego.commons.pojo.EgoResult;
+import com.ego.commons.utils.CookieUtils;
+import com.ego.commons.utils.JsonUtils;
+import com.ego.dubbo.service.TbUserDubboService;
+import com.ego.passport.service.TbUserService;
+import com.ego.pojo.TbUser;
+import com.ego.redis.dao.JedisDao;
+
+@Service
+public class TbUserServiceImpl implements TbUserService{
+
+	@Reference
+	private TbUserDubboService tbUserDubboServiceImpl ;
+	
+	@Resource
+	private JedisDao jedisDaoImpl ;
+	
+	@Override
+	public EgoResult login(TbUser user ,HttpServletRequest request , HttpServletResponse response) {
+		EgoResult ego = new EgoResult();
+		TbUser userSel = tbUserDubboServiceImpl.selByUser(user);
+		if(userSel!=null){
+			ego.setStatus(200);
+			// 当用户登录成功后将用户信息存放到redis中
+			// redis - key UUID为用户信息的key
+			String key = UUID.randomUUID().toString();
+			// redis - value
+			jedisDaoImpl.set(key, JsonUtils.objectToJson(userSel));
+			// 设置key的过期时间
+			jedisDaoImpl.expire(key, 60*60*24*7);
+			// 产生cookie UUID作为cooke的value
+			CookieUtils.setCookie(request, response, "TT_TOKEN", key, 60*60*24*7);
+		}else{
+			ego.setMsg("用户名或密码错误!");
+		}
+		return ego ;
+	}
+
+	@Override
+	public EgoResult getUserInfoByToken(String token) {
+		EgoResult ego = new EgoResult();
+		// 通过cookie值来获取用户信息
+		String json = jedisDaoImpl.get(token);
+		if(json!=null&&!json.equals("")){
+			TbUser user = new TbUser();
+			// 清空密码
+			user.setPassword(null);
+			ego.setStatus(200);
+			ego.setMsg("OK");
+			ego.setData(user);
+		}else{
+			ego.setMsg("获取用户信息失败，请重试");
+		}
+		
+		return ego;
+	}
+
+	@Override
+	public EgoResult logout(String token) {
+		EgoResult ego = new EgoResult();
+		jedisDaoImpl.del(token);
+		return null;
+	}
+
+}

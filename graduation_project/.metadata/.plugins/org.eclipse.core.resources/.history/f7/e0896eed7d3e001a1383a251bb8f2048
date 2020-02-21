@@ -1,0 +1,28 @@
+package com.ego.cart.service;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.ego.commons.pojo.TbItemChild;
+
+public interface TbItemCartService {
+
+	/**
+	 * 添加购物车
+	 * @param id
+	 * @param num
+	 * @param request
+	 */
+	void addCart(long id , int num , HttpServletRequest request);
+	
+	/**
+	 * 显示商品
+	 * @param request
+	 * @return
+	 */
+	List<TbItemChild> showCart(HttpServletRequest request);
+	
+	
+	
+}

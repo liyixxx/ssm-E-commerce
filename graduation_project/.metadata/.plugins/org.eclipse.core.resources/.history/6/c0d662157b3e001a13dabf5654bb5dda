@@ -1,0 +1,30 @@
+package com.ego.cart.controller;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.ego.cart.service.TbItemCartService;
+
+@Controller
+public class CartController {
+
+	@Resource
+	private TbItemCartService tbItemCartServiceImpl ;
+	
+	/**
+	 * 添加购物车
+	 * @return
+	 */
+	@RequestMapping("cart/add/{id}.html")
+	public String addCart(@PathVariable long id ,int num , HttpServletRequest request){
+		tbItemCartServiceImpl.addCart(id, num, request);
+		return "cartSuccess" ;
+	}
+	
+	
+	
+}

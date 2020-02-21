@@ -1,0 +1,15 @@
+package com.ego.search.service.controller;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+
+import com.ego.search.service.TbItemService;
+
+@Controller
+public class TbItemCotroller {
+
+	@Resource
+	private TbItemService tbItemServiceImpl ;
+	
+}

@@ -1,0 +1,30 @@
+package com.ego.passport.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.ego.commons.pojo.EgoResult;
+import com.ego.pojo.TbUser;
+
+@Controller
+public class TbUserController {
+
+	/**
+	 * 显示登录页面
+	 * @RequestHeader("Referer") 获取请求头中的信息 返回原本网页
+	 * @param url
+	 * @return
+	 */
+	@RequestMapping("user/showLogin")
+	public String showLogin(@RequestHeader("Referer") String url , Model model){
+		model.addAttribute("redirect", url);
+		return "login";
+	}
+	
+	public EgoResult login(TbUser user){
+		
+	}
+	
+}

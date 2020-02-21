@@ -1,0 +1,6 @@
+redis.pic.key = bigpic
+
+portal.item.cat = itemCat
+
+redis.item.key = item:
+redis.desc.key = desc:
