@@ -18,7 +18,7 @@
 		<!-- aop -->
 		<aspectjweaver-version>1.8.6</aspectjweaver-version>
 		<!-- mybatis -->
-		<mybatis-version>3.2.7</mybatis-version>
+		<mybatis-version>3.5.6</mybatis-version>
 		<!-- mybatis整合spring -->
 		<mybatis-spring-version>1.2.3</mybatis-spring-version>
 		<!-- log4j -->
