@@ -44,7 +44,7 @@
 		<!-- solr -->
 		<solrj-version>5.3.1</solrj-version>
 		<!-- HttpClient -->
-		<httpclient-version>4.4.1</httpclient-version>
+		<httpclient-version>4.5.13</httpclient-version>
 		<!-- myRedis -->
 		<myRedis-version>0.0.1-SNAPSHOT</myRedis-version>
 	</properties>
