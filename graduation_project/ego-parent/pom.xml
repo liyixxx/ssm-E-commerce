@@ -14,7 +14,7 @@
 		<!-- jstl -->
 		<jstl-version>1.2</jstl-version>
 		<!-- spring -->
-		<spring-version>4.1.6.RELEASE</spring-version>
+		<spring-version>5.3.18</spring-version>
 		<!-- aop -->
 		<aspectjweaver-version>1.8.6</aspectjweaver-version>
 		<!-- mybatis -->
